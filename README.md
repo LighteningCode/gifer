@@ -3,10 +3,16 @@
 > ✨ Bootstrapped with Create Snowpack App (CSA).
 
 ## Available Scripts
-npm start -  starts the application
+
+`npm install` - install the necessary dependencies
 
 
-this is basically runnning in the browser and uses the underlying hardware to convert video files using FFmpeg.
+`npm start` -  starts the application
+
+This is basically runnning in the browser and uses the underlying hardware to convert video files using FFmpeg.
+
+<h6 style="color:red">Dont try to convert a file larger than 200mb your PC will surely blow up</h6>
+
 
 Example images below (converted the pictures using this, actually pretty dope)
 
