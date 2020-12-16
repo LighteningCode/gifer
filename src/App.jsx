@@ -2,38 +2,63 @@ import React, { useState, useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+import { createFFmpeg, fetchFile } from "@ffmpeg/ffmpeg";
+const ffmpeg = createFFmpeg({log:true})
+
+
 function App() {
-  // Create the count state.
-  const [count, setCount] = useState(0);
-  // Create the counter (+1 every second).
-  useEffect(() => {
-    const timer = setTimeout(() => setCount(count + 1), 1000);
-    return () => clearTimeout(timer);
-  }, [count, setCount]);
-  // Return the App component.
-  return (
+
+  const [ready, setReady] = useState(false);
+  const [video, setVideo] = useState();
+  const [gif, setGif] = useState();
+
+  const load = async ( ) =>  {
+    await ffmpeg.load()
+    setReady(true)
+  }
+
+  useEffect(()=>{
+    load()
+  },[])
+
+  const convertToGif = async () => {
+    // read the file that we stored
+    ffmpeg.FS('writeFile','catgif.mp4',await fetchFile(video))
+
+    // run a native CLI ffmpeg command
+    await ffmpeg.run('-i','catgif.mp4','-t','13.0','-ss','13.0','-f','gif','out.gif')
+
+    // read the data gotten
+    const data = ffmpeg.FS('readFile','out.gif')
+
+    // create a URL
+    const url = URL.createObjectURL(new Blob([data.buffer],{type: 'image/gif/'}))
+    setGif(url)
+  }
+
+  return ready ? ( 
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.jsx</code> and save to reload.
-        </p>
-        <p>
-          Page has been open for <code>{count}</code> seconds.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </p>
-      </header>
+      {video && 
+        <video controls
+        width="250"
+        src={URL.createObjectURL(video)} >
+        </video>
+      }
+
+      <input type="file" onChange={(e)=> setVideo(e.target.files?.item(0))}/>
+
+      <button onClick={convertToGif} >Convert</button>
+
+      {gif && 
+        <img 
+        width="250"
+        src={gif} />
+      }
     </div>
-  );
+  ): 
+  (
+    <p>Loading...</p>
+  )
 }
 
 export default App;
