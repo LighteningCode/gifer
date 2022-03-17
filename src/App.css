@@ -1,6 +1,13 @@
 .App {
   text-align: center;
+  height: 100%;
 }
+
+#root{
+  height: 100vh;
+  width: 100vw;
+}
+
 .App code {
   background: #FFF3;
   padding: 4px 8px;
