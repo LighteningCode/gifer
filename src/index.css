@@ -12,10 +12,14 @@ code {
     monospace;
 }
 
-.input{
+.input {
   padding: 20px;
 }
 
-.output{
+.output {
   padding: 20px;
+}
+
+.middle {
+  color: white;
 }

@@ -81,7 +81,7 @@ function App() {
                 value: '#0d47a1',
               },
             },
-            fpsLimit: 120,
+            fpsLimit: 50,
             interactivity: {
               events: {
                 onClick: {
@@ -102,11 +102,11 @@ function App() {
                   size: 40,
                 },
                 push: {
-                  quantity: 4,
+                  quantity: 2,
                 },
                 repulse: {
-                  distance: 200,
-                  duration: 0.9,
+                  distance: 100,
+                  duration: 30,
                 },
               },
             },
@@ -129,7 +129,7 @@ function App() {
                 enable: true,
                 outMode: 'bounce',
                 random: false,
-                speed: 6,
+                speed: 3,
                 straight: false,
               },
               number: {
@@ -137,13 +137,13 @@ function App() {
                   enable: true,
                   area: 800,
                 },
-                value: 80,
+                value: 30,
               },
               opacity: {
                 value: 0.5,
               },
               shape: {
-                type: 'circle',
+                type: 'square',
               },
               size: {
                 random: true,
@@ -200,6 +200,7 @@ function App() {
             </div>
 
             <div
+              className="middle"
               style={{
                 height: '250px',
                 display: 'flex',
