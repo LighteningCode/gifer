@@ -8,13 +8,25 @@ import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg';
 const ffmpeg = createFFmpeg({ log: true });
 
 function App() {
-  const [ready, setReady] = useState(true);
+  const [ready, setReady] = useState(false);
+  const [error, setError] = useState(false);
   const [video, setVideo] = useState();
+  const [bgColor, setbgColor] = useState('#0d47a1');
   const [gif, setGif] = useState();
 
   const load = async () => {
-    await ffmpeg.load();
-    setReady(true);
+    await ffmpeg
+      .load()
+      .then((value) => {
+        console.log(value);
+        setReady(true);
+      })
+      .catch((err) => {
+        console.log(err);
+        setbgColor('#f58b67');
+        setReady(false);
+        setError(true)
+      });
   };
 
   useEffect(() => {
@@ -38,17 +50,24 @@ function App() {
     ffmpeg.FS('writeFile', 'catgif.mp4', await fetchFile(video));
 
     // run a native CLI ffmpeg command
-    await ffmpeg.run(
-      '-i',
-      'catgif.mp4',
-      '-t',
-      '13.0',
-      '-ss',
-      '13.0',
-      '-f',
-      'gif',
-      'out.gif',
-    );
+    await ffmpeg
+      .run(
+        '-i',
+        'catgif.mp4',
+        '-t',
+        '13.0',
+        '-ss',
+        '13.0',
+        '-f',
+        'gif',
+        'out.gif',
+      )
+      .then(() => {
+        setbgColor('#86f567');
+      })
+      .catch(() => {
+        setbgColor('#f58b67');
+      });
 
     // read the data gotten
     const data = ffmpeg.FS('readFile', 'out.gif');
@@ -60,7 +79,13 @@ function App() {
     setGif(url);
   };
 
-  return ready ? (
+  const openFileSelect = () => {
+    if (ready) {
+      document.getElementById('video_file_upload')?.click();
+    }
+  };
+
+  return (
     <>
       <div
         style={{
@@ -78,7 +103,7 @@ function App() {
           options={{
             background: {
               color: {
-                value: '#0d47a1',
+                value: bgColor,
               },
             },
             fpsLimit: 50,
@@ -175,26 +200,29 @@ function App() {
           >
             <div className="input">
               {video ? (
-                <video
-                  controls
-                  width="250"
-                  height="250"
-                  style={{ objectFit: 'cover' }}
-                  src={URL.createObjectURL(video)}
-                ></video>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <video
+                    controls
+                    width="250"
+                    height="250"
+                    style={{ objectFit: 'cover', borderRadius: 10 }}
+                    src={URL.createObjectURL(video)}
+                  ></video>
+                  <button onClick={() => openFileSelect()}>Choose Video</button>
+                </div>
               ) : (
-                <div
-                  style={{
-                    width: 250,
-                    height: 250,
-                    backgroundColor: '#a8a8a8',
-                  }}
-                ></div>
+                <div className="empty-input" onClick={() => openFileSelect()}>
+                  <div>
+                    {ready ? 'Click to select a video' : 'Loading FFMPEG...'}{' '}
+                  </div>
+                </div>
               )}
               <br />
 
               <input
+                id="video_file_upload"
                 type="file"
+                accept="video/*"
                 onChange={(e) => setVideo(e.target.files?.item(0))}
               />
             </div>
@@ -214,28 +242,24 @@ function App() {
               </code>
               <br />
               <small style={{}}>Video to Gif File converter</small>
+              <br />
+              {video && <button onClick={convertToGif}>Convert</button>}
+              {error && <div style={{backgroundColor: "red", borderRadius:10, padding: "3px"}}>Error</div> }
             </div>
 
             <div className="output">
               {gif ? (
                 <img width="250" height="250" src={gif} />
               ) : (
-                <div
-                  style={{
-                    width: 250,
-                    height: 250,
-                    backgroundColor: '#a8a8a8',
-                  }}
-                ></div>
+                <div className="empty-input">
+                  <div>Your output will be displayed here</div>
+                </div>
               )}
-              <button onClick={convertToGif}>Convert</button>
             </div>
           </main>
         </div>
       </div>
     </>
-  ) : (
-    <p>Loading...</p>
   );
 }
 
