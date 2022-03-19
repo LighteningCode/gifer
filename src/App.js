@@ -191,12 +191,6 @@ function App() {
           }}
         >
           <main
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              width: 'auto',
-              alignSelf: 'center',
-            }}
           >
             <div className="input">
               {video ? (
