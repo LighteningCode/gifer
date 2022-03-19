@@ -191,6 +191,7 @@ function App() {
           }}
         >
           <main
+
           >
             <div className="input">
               {video ? (

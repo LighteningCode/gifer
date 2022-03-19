@@ -19,7 +19,8 @@
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "npm run build && firebase deploy --token 1//03pjbfZ7yLEz6CgYIARAAGAMSNwF-L9IrA70KPICf9NmUdP9b59h0FlKJXdOkC6kswLGJs20FKbKsRmg1CN7AP8TUzqbUY89mHRM"
   },
   "eslintConfig": {
     "extends": [
