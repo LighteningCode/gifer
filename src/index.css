@@ -1,0 +1,69 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+.input {
+  padding: 20px;
+}
+
+.output {
+  padding: 20px;
+}
+
+.middle {
+  color: white;
+}
+
+#video_file_upload {
+  display: none;
+}
+
+.empty-input {
+  width: 250px;
+  height: 250px;
+  background-color: #cccccc67;
+  border-radius: 10px;
+  position: relative;
+  transition-duration: 300ms;
+  flex-direction: row;
+  display: flex;
+  justify-content: center;
+}
+
+.empty-input > * {
+  align-self: center;
+}
+
+.empty-input:hover {
+  width: 250px;
+  height: 250px;
+  background-color: #cccccc;
+  border-radius: 10px;
+  position: relative;
+}
+
+main {
+  display: flex;
+  flex-direction: row;
+  width: auto;
+  align-self: center;
+}
+
+@media only screen and (max-width: 600px) {
+  main {
+    display: flex;
+    flex-direction: column;
+    width: auto;
+    align-self: center;
+  }
+}
