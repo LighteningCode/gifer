@@ -156,6 +156,7 @@ function App() {
                 random: false,
                 speed: 3,
                 straight: false,
+                bounce: true,
               },
               number: {
                 density: {
